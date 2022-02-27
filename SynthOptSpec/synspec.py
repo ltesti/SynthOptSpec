@@ -76,7 +76,7 @@ class SynSpec(object):
         # return aswl[nwl], asfl[nwl]
         return np.array(wl,dtype=float), np.array(fl,dtype=float)
     
-    def plotspec(self, smoothed=False, outfile=None, showedge=True):
+    def plotspec(self, smoothed=False, resampled=True, outfile=None, showedge=True):
         #
         fig = plt.figure(figsize=(14,7))
         #
@@ -87,6 +87,8 @@ class SynSpec(object):
         else:
             plt.xlim(self.wlmin,self.wlmax)
         plt.plot(self.swl,self.sfl,color='r',alpha=0.5)
+        if resampled:
+            plt.plot(self.rswl,self.rsfl,color='g',alpha=0.85)
         #
         plt.xlabel('Wavelength ($\AA$)')
         plt.ylabel('Fluxm (model units)')
@@ -95,6 +97,8 @@ class SynSpec(object):
             if showedge:
                 plt.plot(self.aswl,self.sasfl,color='lightgreen',linestyle='dotted',alpha=0.6) 
             plt.plot(self.swl,self.ssfl,color='royalblue',linestyle='dotted')
+            if resampled:
+                plt.plot(self.rswl,self.rssfl,color='cyan',linestyle='dashed')
         #
         if outfile:
             plt.savefig(outfile)
@@ -143,4 +147,41 @@ class SynSpec(object):
             self.ssfl = self.sasfl[self.nwl]
         else:
             return ssfl
+            
+    def resample(self, wlsamp, smoothed=False, set_rsfl_attribute=True, set_rssfl_attribute=True):
+        """
+        method to resample the spectrum on a new wavelength grid
+        the assumption is to do a simple binning - average flux per wl bin
+        """
+        rsfl = np.zeros(len(wlsamp))
+        if smoothed:
+            rssfl = np.zeros(len(wlsamp))
+         
+        bins = np.zeros((len(wlsamp),2))
+        for i in range(len(wlsamp)):
+            # set up the bins
+            if i<len(wlsamp)-1:
+                db = (wlsamp[i+1]-wlsamp[i])/2.
+                bins[i,1] = wlsamp[i] + db
+                bins[i+1,0] = wlsamp[i] + db
+                if i==0:
+                    bins[i,0] = wlsamp[i] - db
+                if i== len(wlsamp)-2:
+                    bins[i+1,1] = wlsamp[i+1] + db
+            # find who is in i-bin 
+            nib = np.where( (self.aswl >= bins[i,0]) & (self.aswl < bins[i,1]))
+            if len(nib[0]>0):
+                rsfl[i] = np.mean(self.asfl[nib])
+                if smoothed:
+                    rssfl[i] = np.mean(self.sasfl[nib])
+        #
+        if smoothed & set_rssfl_attribute:
+            self.rssfl = rssfl
+        if set_rsfl_attribute:
+            self.rsfl = rsfl
+            self.rswl = wlsamp
+        else:
+            return rsfl   
+          
+        
     
