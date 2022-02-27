@@ -1,0 +1,1 @@
+Code to read synthetic stellar spectra and convert it into the wavelength range, resolution and sampling of the MUSE data. Originally developed for the Tr14 Carina MUSE project.
