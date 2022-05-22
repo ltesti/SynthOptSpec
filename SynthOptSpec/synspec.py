@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+from .utils import resamp_spec
 
 class SynSpec(object):
     """
@@ -154,35 +155,14 @@ class SynSpec(object):
         method to resample the spectrum on a new wavelength grid
         the assumption is to do a simple binning - average flux per wl bin
         """
-        rsfl = np.zeros(len(wlsamp))
-        if smoothed:
-            rssfl = np.zeros(len(wlsamp))
-         
-        bins = np.zeros((len(wlsamp),2))
-        for i in range(len(wlsamp)):
-            # set up the bins
-            if i<len(wlsamp)-1:
-                db = (wlsamp[i+1]-wlsamp[i])/2.
-                bins[i,1] = wlsamp[i] + db
-                bins[i+1,0] = wlsamp[i] + db
-                if i==0:
-                    bins[i,0] = wlsamp[i] - db
-                if i== len(wlsamp)-2:
-                    bins[i+1,1] = wlsamp[i+1] + db
-            # find who is in i-bin 
-            nib = np.where( (self.aswl >= bins[i,0]) & (self.aswl < bins[i,1]))
-            if len(nib[0]>0):
-                rsfl[i] = np.mean(self.asfl[nib])
-                if smoothed:
-                    rssfl[i] = np.mean(self.sasfl[nib])
-        #
+
         if smoothed & set_rssfl_attribute:
-            self.rssfl = rssfl
+            self.rssfl = resamp_spec(wlsamp, self.aswl, self.sasfl)
         if set_rsfl_attribute:
-            self.rsfl = rsfl
+            self.rsfl = resamp_spec(wlsamp, self.aswl, self.asfl)
             self.rswl = wlsamp
         else:
-            return rsfl   
+            return resamp_spec(wlsamp, self.aswl, self.asfl)
           
         
     
