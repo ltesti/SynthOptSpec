@@ -180,7 +180,7 @@ def get_g_t_idx(df,myg,myt):
     return mydatadic
 
 
-def get_spec(df, dl, logg, teff):
+def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, normalization="Dominika"):
     #
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
@@ -192,12 +192,23 @@ def get_spec(df, dl, logg, teff):
         print("Error: te spectral library does not have the required resolution")
         w = wl
         f = fl
+    elif (wlmin < wl[0]) or (wlmax > wl[-1]):
+        print("Error: te spectral library does not cover fully the requested wavelength range")
+        w = wl
+        f = fl
     else:
-        w = np.arange(wl[0],wl[-1]+dl,dl)
+        w = np.arange(wlmin, wlmax, dl)
         f = resamp_spec(w, wl, fl)
 
     # Return the final spectrum
-    return w, f
+    if normalization:
+        if normalization == "Dominika":
+            id750 = np.abs(w - 7500.).argmin()
+            f750 = np.nanmedian(f[id750 - 3:id750 + 3])
+            fn = f / f750
+    else:
+        fn = np.copy(f)
+    return w, fn
 
 
 def get_wlgrid(w1, w2):
