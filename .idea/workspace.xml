@@ -4,6 +4,7 @@
     <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[synspec] added ability to read fits">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,13 +22,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/lt270210/git_repository/SynthOptSpec"
-  }
-}]]></component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />

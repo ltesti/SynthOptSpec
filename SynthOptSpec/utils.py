@@ -5,9 +5,10 @@ from __future__ import (division, print_function, absolute_import,
                         unicode_literals)
 
 import numpy as np
+import types
 
 
-def nrefrac(wavelength, density=1.0):
+def nrefrac(wl, density=1.0):
    """Calculate refractive index of air from Cauchy formula.
 
    Input: wavelength in Angstrom, density of air in amagat (relative to STP,
@@ -30,11 +31,11 @@ def nrefrac(wavelength, density=1.0):
 
    #  AIR = VAC / (1.0 + 2.735182E-4 + 131.4182 / VAC^2 + 2.76249E8 / VAC^4)
 
-   try:
-       if isinstance(wavelength, types.ObjectType):
-           wl = np.array(wavelength)
-   except TypeError:
-       return None
+   #try:
+   #    if isinstance(wavelength, types.ObjectType):
+   #        wl = np.array(wavelength)
+   #except TypeError:
+   #    return None
 
    wl2inv = (1.e4/wl)**2
    refracstp = 272.643 + 1.2288 * wl2inv  + 3.555e-2 * wl2inv**2

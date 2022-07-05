@@ -82,7 +82,7 @@ class SynSpec(object):
             read_fl = np.array(fl, dtype=float)
         else:
             spt = Table.read(self.infile, hdu=1)
-            wl = np.array(spt['Wavelength'], dtype=float)
+            wl = 10000. * np.array(spt['Wavelength'], dtype=float)
             ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
             vac_wl = wl[ng]
             read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
