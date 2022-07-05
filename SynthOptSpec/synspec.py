@@ -80,7 +80,12 @@ class SynSpec(object):
             read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))
             read_fl = np.array(fl,dtype=float)
         else:
-            pass
+            spt = Table.read(self.infile, hdu=1)
+            wl = np.array(spt['Wavelength'])
+            ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
+            vac_wl = wl[ng]
+            read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+            read_fl = np.array(spt['Flux'])[ng]
         #
         # nwl = np.where((aswl >= self.wlextrmin) & (aswl <= self.wlextrmax))
         #
