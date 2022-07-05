@@ -76,21 +76,17 @@ class SynSpec(object):
                         wl.append(mywl)
                         fl.append(columns[1])
             f.close()
-            vac_wl = np.array(wl,dtype=float)
+            vac_wl = np.array(wl, dtype=float)
             read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))
-            read_fl = np.array(fl,dtype=float)
+            read_fl = np.array(fl, dtype=float)
         else:
             spt = Table.read(self.infile, hdu=1)
-            wl = np.array(spt['Wavelength'])
+            wl = np.array(spt['Wavelength'], dtype=float)
             ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
             vac_wl = wl[ng]
             read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
-            read_fl = np.array(spt['Flux'])[ng]
+            read_fl = np.array(spt['Flux'], dtype=float)[ng]
         #
-        # nwl = np.where((aswl >= self.wlextrmin) & (aswl <= self.wlextrmax))
-        #
-        # return aswl[nwl], asfl[nwl]
-        #return np.array(wl,dtype=float), np.array(fl,dtype=float)
         return read_wl, read_fl
     
     def plotspec(self, smoothed=False, resampled=True, outfile=None, showedge=True):
