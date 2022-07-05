@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-from .utils import resamp_spec
+from .utils import resamp_spec, nrefrac
 
 class SynSpec(object):
     """
@@ -30,6 +30,10 @@ class SynSpec(object):
         self.params = parameters
         
         self.infile = self.params['file']
+        if 'format' in self.params.keys():
+            self.file_format = self.params['format']
+        else:
+            self.file_format = 'fits'
         self.wlmin = self.params['wlmin']
         self.wlmax = self.params['wlmax']
         
@@ -58,25 +62,31 @@ class SynSpec(object):
         """
         method to read the spectrum within the defined wavelength boundaries
         """
-        f = open(self.infile, 'r')
-        wl = []
-        fl = []
-        for line in f:
-            line = line.strip()
-            columns = line.split()
-            if columns[0] != '#':
-                mywl = columns[0]
-                if ((float(mywl) >= self.wlextrmin) & (float(mywl) <= self.wlextrmax)):
-                    wl.append(mywl)
-                    fl.append(columns[1]) 
-        f.close()
-        # aswl = np.array(wl,dtype=float)
-        # asfl = np.array(fl,dtype=float)
+
+        if (self.file_format == 'old') or (self.file_format == 'txt'):
+            f = open(self.infile, 'r')
+            wl = []
+            fl = []
+            for line in f:
+                line = line.strip()
+                columns = line.split()
+                if columns[0] != '#':
+                    mywl = columns[0]
+                    if ((float(mywl) >= self.wlextrmin) & (float(mywl) <= self.wlextrmax)):
+                        wl.append(mywl)
+                        fl.append(columns[1])
+            f.close()
+            vac_wl = np.array(wl,dtype=float)
+            read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))
+            read_fl = np.array(fl,dtype=float)
+        else:
+            pass
         #
         # nwl = np.where((aswl >= self.wlextrmin) & (aswl <= self.wlextrmax))
         #
         # return aswl[nwl], asfl[nwl]
-        return np.array(wl,dtype=float), np.array(fl,dtype=float)
+        #return np.array(wl,dtype=float), np.array(fl,dtype=float)
+        return read_wl, read_fl
     
     def plotspec(self, smoothed=False, resampled=True, outfile=None, showedge=True):
         #

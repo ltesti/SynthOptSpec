@@ -7,10 +7,69 @@ from __future__ import (division, print_function, absolute_import,
 import numpy as np
 
 
-def get_spec_file(teff,LogG,modspecdir='Models/bt-settl/'):
+def nrefrac(wavelength, density=1.0):
+   """Calculate refractive index of air from Cauchy formula.
+
+   Input: wavelength in Angstrom, density of air in amagat (relative to STP,
+   e.g. ~10% decrease per 1000m above sea level).
+   Returns N = (n-1) * 1.e6.
+
+   directly taken from: https://phoenix.ens-lyon.fr/Grids/FORMAT
+   
+   Note that Phoenix delivers synthetic spectra in the vaccum and that a line
+   shift is necessary to adapt these synthetic spectra for comparisons to
+   observations from the ground. For this, divide the vacuum wavelengths by
+   (1+1.e-6*nrefrac) as returned from the function below to get the air 
+   wavelengths (or use the equation for AIR from it).  
+
+   """
+
+   # The IAU standard for conversion from air to vacuum wavelengths is given
+   # in Morton (1991, ApJS, 77, 119). For vacuum wavelengths (VAC) in
+   # Angstroms, convert to air wavelength (AIR) via:
+
+   #  AIR = VAC / (1.0 + 2.735182E-4 + 131.4182 / VAC^2 + 2.76249E8 / VAC^4)
+
+   try:
+       if isinstance(wavelength, types.ObjectType):
+           wl = np.array(wavelength)
+   except TypeError:
+       return None
+
+   wl2inv = (1.e4/wl)**2
+   refracstp = 272.643 + 1.2288 * wl2inv  + 3.555e-2 * wl2inv**2
+   return density * refracstp
+
+def get_spec_file(teff,LogG,modspecdir='Models/bt-settl/',oldgrid=False):
     """
     This function takes effective temperature (teff) and Log(g) (LogG) for the synthetic spectra
     and returns the filename for the spectrum. The directory where the synthetic spectra reside 
+    is also a parameter.
+    """
+    teffstr = str(int(teff/100))
+    Z = '0.0'
+
+    if oldgrid:
+        #modspecdir = 'Models/bt-settl/'
+        if teff<1000.:
+            teffstr = '00'+teffstr
+        elif teff<10000.:
+            teffstr = '0'+teffstr
+        if teff>2500.:
+            specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-NextGen.7.dat.txt'
+        else:
+            specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'.BT-Settl.7.dat.txt'
+    else:
+        #modspecdir = mymodspecdir
+        teffstr = '0' + teffstr
+        specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.fits'
+
+    return specfile
+
+def get_spec_file_old(teff,LogG,modspecdir='Models/bt-settl/'):
+    """
+    This function takes effective temperature (teff) and Log(g) (LogG) for the synthetic spectra
+    and returns the filename for the spectrum. The directory where the synthetic spectra reside
     is also a parameter.
     """
     teffstr = str(int(teff/100))
@@ -179,16 +238,37 @@ def get_g_t_idx(df,myg,myt):
     }
     return mydatadic
 
+def get_phot_spec(df, logg, teff):
+    # gets the spectra from the library and interpolates at the resolution
+    # of the lower resolution spectrum in the (up to) four spectra
+    #
+    data_for_interpolation = get_g_t_idx(df, logg, teff)
+    wl, fl = get_interp_spec(data_for_interpolation)
+    #
+    return wl, fl
 
-def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, av=0.0, rv=3.1, normalization="Dominika"):
+def apply_rvel(wl, rvel):
+    #
+    ckms = 299792.458  # speed of light in km/s
+    # Radial velocity
+    wl = wl * (1. + rvel / ckms)
+    #
+    return wl
+
+def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, av=None, rv=3.1, rvel=None, normalization="Dominika"):
     #
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
-    data_for_interpolation = get_g_t_idx(df, logg, teff)
-    wl, fl = get_interp_spec(data_for_interpolation)
+    #
+    wl, fl = get_phot_spec(df, logg, teff)
+
+    # Radial velocity
+    if rvel and rvel != 0.0:
+         wl = apply_rvel(wl, rvel)
 
     # Extinction
-    fl = fl*cardelli_extinction(wl,av,rv)
+    if av and av > 0.0:
+        fl = fl*cardelli_extinction(wl, av, rv)
 
     # Resample to the desired spectral resolution
     if (dl*dl<(wl[1]-wl[0])**2.) & (dl*dl<(wl[-1]-wl[-2])**2.):
