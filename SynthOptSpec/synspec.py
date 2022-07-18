@@ -59,7 +59,7 @@ class SynSpec(object):
         #
         return self.wlmin-self.wledge, self.wlmax+self.wledge
     
-    def getspec(self):
+    def getspec(self, correct_vacuum=False):
         """
         method to read the spectrum within the defined wavelength boundaries
         """
@@ -85,7 +85,10 @@ class SynSpec(object):
             wl = 10000. * np.array(spt['Wavelength'], dtype=float)
             ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
             vac_wl = wl[ng]
-            read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+            if correct_vacuum:
+                read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+            else:
+                read_wl = np.copy(vac_wl)
             read_fl = np.array(spt['Flux'], dtype=float)[ng]
         #
         return read_wl, read_fl
