@@ -72,10 +72,10 @@ class SynSpec(object):
                 line = line.strip()
                 columns = line.split()
                 if columns[0] != '#':
-                    mywl = columns[0]
-                    if ((float(mywl) >= self.wlextrmin) & (float(mywl) <= self.wlextrmax)):
+                    mywl = float(columns[0].replace("D", "E"))
+                    if (mywl >= self.wlextrmin) & (mywl <= self.wlextrmax):
                         wl.append(mywl)
-                        fl.append(columns[1])
+                        fl.append(10**float(columns[1].replace("D", "E")))
             f.close()
             vac_wl = np.array(wl, dtype=float)
             read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))
@@ -91,7 +91,8 @@ class SynSpec(object):
                 read_wl = np.copy(vac_wl)
             read_fl = np.array(spt['Flux'], dtype=float)[ng]
         #
-        return read_wl, read_fl
+        nsort = np.argsort(read_wl)
+        return read_wl[nsort], read_fl[nsort]
     
     def plotspec(self, smoothed=False, resampled=True, outfile=None, showedge=True):
         #

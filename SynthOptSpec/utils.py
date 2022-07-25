@@ -41,7 +41,7 @@ def nrefrac(wl, density=1.0):
    refracstp = 272.643 + 1.2288 * wl2inv  + 3.555e-2 * wl2inv**2
    return density * refracstp
 
-def get_spec_file(teff,LogG,modspecdir='Models/bt-settl/',oldgrid=False,model='Settl'):
+def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
     """
     This function takes effective temperature (teff) and Log(g) (LogG) for the synthetic spectra
     and returns the filename for the spectrum. The directory where the synthetic spectra reside 
@@ -51,39 +51,49 @@ def get_spec_file(teff,LogG,modspecdir='Models/bt-settl/',oldgrid=False,model='S
     Z = '0.0'
 
     if oldgrid:
+        if not modspecdir:
+            modspecdir = 'Models/bt-settl/'
+        teffstr = '0' + teffstr
+        specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.fits'
+    else:
         #modspecdir = 'Models/bt-settl/'
         if teff<1000.:
             teffstr = '00'+teffstr
         elif teff<10000.:
             teffstr = '0'+teffstr
-        if teff>2500.:
+        if teff>00.:
             if model == 'Dusty':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-dusty/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Dusty.spec.7'
             elif model == 'Settl':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-settl-2019/'
                 specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
             elif model == 'NextGen':
-                #specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7.dat.txt'
+                if not modspecdir:
+                    modspecdir = 'Models/bt-nextgen/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7'
             elif model == 'Cond':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-cond/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
             else:
-                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7'
+                if not modspecdir:
+                    modspecdir = 'Models/bt-settl-2019/'
+                specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
 
-        else:
-            if model == 'Dusty':
-                specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'.BT-Dusty.spec.7'
-            elif model == 'Settl':
-                specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
-            elif model == 'NextGen':
-                specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-NextGen.7'
-            elif model == 'Cond':
-                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
-            else:
-                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Settl.7.dat.txt'
-    else:
-        #modspecdir = mymodspecdir
-        teffstr = '0' + teffstr
-        specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.fits'
+        #else:
+        #    if model == 'Dusty':
+        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'.BT-Dusty.spec.7'
+        #    elif model == 'Settl':
+        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
+        #    elif model == 'NextGen':
+        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-NextGen.7'
+        #    elif model == 'Cond':
+        #        specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
+        #    else:
+        #        specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Settl.7.dat.txt'
 
     return specfile
 
