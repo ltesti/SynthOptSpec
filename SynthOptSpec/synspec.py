@@ -59,7 +59,7 @@ class SynSpec(object):
         #
         return self.wlmin-self.wledge, self.wlmax+self.wledge
     
-    def getspec(self, correct_vacuum=False):
+    def getspec(self, correct_vacuum=True):
         """
         method to read the spectrum within the defined wavelength boundaries
         """

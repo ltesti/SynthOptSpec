@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils synspec] changed vacuum correction to optional">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils synspec] changed read routines to match the &quot;new&quot; libraries at https://phoenix.ens-lyon.fr/Grids/">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658147634806</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="[utils synspec] changed read routines to match the &quot;new&quot; libraries at https://phoenix.ens-lyon.fr/Grids/">
+      <created>1658754203071</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1658754203071</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -93,6 +99,7 @@
     <MESSAGE value="[synspec] added ability to read fits" />
     <MESSAGE value="[utils synspec] completed reading spectra in fits format" />
     <MESSAGE value="[utils synspec] changed vacuum correction to optional" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils synspec] changed vacuum correction to optional" />
+    <MESSAGE value="[utils synspec] changed read routines to match the &quot;new&quot; libraries at https://phoenix.ens-lyon.fr/Grids/" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils synspec] changed read routines to match the &quot;new&quot; libraries at https://phoenix.ens-lyon.fr/Grids/" />
   </component>
 </project>
