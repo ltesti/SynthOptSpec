@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="minor bug" />
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] adjusted the directory for the fits files">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658780501371</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="[utils] adjusted the directory for the fits files">
+      <created>1658820267390</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1658820267390</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -128,6 +138,7 @@
     <MESSAGE value="[synspec] set default to correct vacuum (it is already the only option with the latest libraries)" />
     <MESSAGE value="[utils] modified to account for the 2019 version of the Settl models" />
     <MESSAGE value="minor bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor bug" />
+    <MESSAGE value="[utils] adjusted the directory for the fits files" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils] adjusted the directory for the fits files" />
   </component>
 </project>
