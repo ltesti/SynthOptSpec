@@ -85,7 +85,6 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
             elif model == 'Settl-fits':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-fits/'
-                teffstr = '0' + teffstr
                 specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.fits'
             else:
                 if not modspecdir:
