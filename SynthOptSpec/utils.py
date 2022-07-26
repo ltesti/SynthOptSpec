@@ -52,7 +52,7 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
 
     if oldgrid:
         if not modspecdir:
-            modspecdir = 'Models/bt-settl/'
+            modspecdir = 'Models/bt-settl-fits/'
         teffstr = '0' + teffstr
         specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.fits'
     else:
@@ -85,7 +85,7 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
             else:
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
-                specfile = modspecdir+'lte'+teffstr+'.0-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
+                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7'
 
         #else:
         #    if model == 'Dusty':

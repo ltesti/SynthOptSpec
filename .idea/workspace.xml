@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] modified to account for the 2019 version of the Settl models">
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
-    </list>
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="minor bug" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -94,7 +92,21 @@
       <option name="project" value="LOCAL" />
       <updated>1658778515504</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="minor bug">
+      <created>1658780335063</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1658780335063</updated>
+    </task>
+    <task id="LOCAL-00008" summary="minor bug">
+      <created>1658780501371</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1658780501371</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,6 +127,7 @@
     <MESSAGE value="[utils synspec] changed read routines to match the &quot;new&quot; libraries at https://phoenix.ens-lyon.fr/Grids/" />
     <MESSAGE value="[synspec] set default to correct vacuum (it is already the only option with the latest libraries)" />
     <MESSAGE value="[utils] modified to account for the 2019 version of the Settl models" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils] modified to account for the 2019 version of the Settl models" />
+    <MESSAGE value="minor bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor bug" />
   </component>
 </project>
