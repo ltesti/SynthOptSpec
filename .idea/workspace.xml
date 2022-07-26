@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] adjusted the directory for the fits files">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] minor bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +116,21 @@
       <option name="project" value="LOCAL" />
       <updated>1658820267390</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="[utils] corrected logic for finding fits files of the Settl library">
+      <created>1658821701221</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1658821701221</updated>
+    </task>
+    <task id="LOCAL-00011" summary="[utils] minor bug">
+      <created>1658821854908</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1658821854908</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +153,8 @@
     <MESSAGE value="[utils] modified to account for the 2019 version of the Settl models" />
     <MESSAGE value="minor bug" />
     <MESSAGE value="[utils] adjusted the directory for the fits files" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils] adjusted the directory for the fits files" />
+    <MESSAGE value="[utils] corrected logic for finding fits files of the Settl library" />
+    <MESSAGE value="[utils] minor bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils] minor bug" />
   </component>
 </project>

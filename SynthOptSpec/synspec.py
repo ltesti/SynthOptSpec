@@ -5,6 +5,7 @@ from __future__ import (division, print_function, absolute_import,
                         unicode_literals)
                         
 import numpy as np
+import scipy.interpolate as ssi
 import matplotlib.pyplot as plt
 import os
 from astropy.table import Table
@@ -121,18 +122,19 @@ class SynSpec(object):
         if outfile:
             plt.savefig(outfile)
 
-    def smoothspec(self, R, set_ssfl_attribute=True, constantR=True, modelR=None, nsig=5.):
+    def smoothspec(self, R=4000., set_ssfl_attribute=True, muse_res_manual=True, verbose=False, constantR=True, modelR=None, nsig=5.):
         """
         method to do a gaussian convolution to reach a final resolution R
         in this initial version, we are assuming that modelR >> R (infinite
         resolution approximation), so that the sigma of the convolution gaussian 
         is the only parameter that defines the final resolution
         
-        R = final resolution (in the initial version is assumed to be constant)
+        R = final resolution this has become optional and we use the MUSE table as default
         set_ssfl_attribute = True/False controls whether the smoothed spectrum is stored in the object
                              if set_ssfl_attribute is True, then the method will store the smoothed spectrum    
                              in the attributes self.sasfl and self.ssfl, otherwise the method will return the 
                              full smoothed spectrum (including the possible edges)
+        muse_res_manual = True/False use the resolution table provided in the MUSE manual (P110)
         constantR = True/False allows the option of non constant R (not yet implemented)
         modelR = value of the model resolution, to include the intrinsic resolution in the final result
                  (not yet implemented)
@@ -143,19 +145,37 @@ class SynSpec(object):
         def fgauss(x,s):
             return np.exp(-x**2/(2.*s**2))
 
+        # These are from the MUSE manual Section 3.2 (P110 version)
+        muse_res_wl = np.array([4650.0,5000.0,5500.0,6000.0,6500.0,7000.0,7500.0,8000.0,8500.0,9000.0,9350.0])
+        muse_res = np.array([1609.,1750.,1978.,2227.,2484.,2737.,2975.,3183.,3350.,3465.,3506.])
+
         ssfl = np.zeros(len(self.asfl))
+        dl = self.aswl / R
+        if muse_res_manual:
+            if verbose: print("Using MUSE-res-manual ({0}, {1}) => ".format(dl[0],dl[-1]))
+            muse_res_interp = ssi.interp1d(muse_res_wl,muse_res)
+            nlow = np.where(self.aswl<=muse_res_wl[0])
+            dl[nlow] = self.aswl[nlow]/muse_res[0]
+            nhigh = np.where(self.aswl>=muse_res_wl[-1])
+            dl[nhigh] = self.aswl[nhigh]/muse_res[-1]
+            ninterp = np.where((self.aswl>muse_res_wl[0]) & (self.aswl<muse_res_wl[-1]))
+            dl[ninterp] = self.aswl[ninterp]/muse_res_interp(self.aswl[ninterp])
+            if verbose: print(" ({0}, {1})\n".format(dl[0], dl[-1]))
+
+        sdl = dl / (2. * np.sqrt(2. * np.log(2.)))
+
         for i in range(len(self.asfl)):
-            dl = self.aswl[i]/R
+            #dl = self.aswl[i]/R
             #nsig = 5.
-            sdl = dl/(2.*np.sqrt(2.*np.log(2.)))
-            msdl = self.aswl[i]-nsig*sdl
-            psdl = self.aswl[i]+nsig*sdl
+            #sdl = dl/(2.*np.sqrt(2.*np.log(2.)))
+            msdl = self.aswl[i]-nsig*sdl[i]
+            psdl = self.aswl[i]+nsig*sdl[i]
             nsm = np.where((self.aswl >= msdl) & (self.aswl<=psdl))
             smwl = self.aswl[nsm]
             fs = 0.
             area = 0.
             for j in range(len(smwl)):
-                fg = fgauss(smwl[j]-self.aswl[i],sdl)
+                fg = fgauss(smwl[j]-self.aswl[i],sdl[i])
                 fs += fg*self.asfl[nsm[0][j]]
                 area += fg
             ssfl[i] = fs/area
@@ -172,13 +192,14 @@ class SynSpec(object):
         the assumption is to do a simple binning - average flux per wl bin
         """
 
-        if smoothed & set_rssfl_attribute:
-            self.rssfl = resamp_spec(wlsamp, self.aswl, self.sasfl)
+        if smoothed:
+            flvec = np.copy(self.sasfl)
+        else:
+            flvec = np.copy(self.asfl)
         if set_rsfl_attribute:
-            self.rsfl = resamp_spec(wlsamp, self.aswl, self.asfl)
+            self.rsfl = resamp_spec(wlsamp, self.aswl, flvec)
             self.rswl = wlsamp
         else:
-            return resamp_spec(wlsamp, self.aswl, self.asfl)
-          
-        
+            return resamp_spec(wlsamp, self.aswl, flvec)
+
     
