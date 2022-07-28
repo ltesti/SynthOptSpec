@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] minor bug">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[synspec] Reworked the smoothing function, including the MUSE table from the P110 manual and correcting a mistake in the logic related to the resampling function. The constant resolution R is now optional parameter and the default action is to use the MUSE table.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658821854908</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="[synspec] Reworked the smoothing function, including the MUSE table from the P110 manual and correcting a mistake in the logic related to the resampling function. The constant resolution R is now optional parameter and the default action is to use the MUSE table.">
+      <created>1658838264302</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1658838264302</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -155,6 +162,7 @@
     <MESSAGE value="[utils] adjusted the directory for the fits files" />
     <MESSAGE value="[utils] corrected logic for finding fits files of the Settl library" />
     <MESSAGE value="[utils] minor bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils] minor bug" />
+    <MESSAGE value="[synspec] Reworked the smoothing function, including the MUSE table from the P110 manual and correcting a mistake in the logic related to the resampling function. The constant resolution R is now optional parameter and the default action is to use the MUSE table." />
+    <option name="LAST_COMMIT_MESSAGE" value="[synspec] Reworked the smoothing function, including the MUSE table from the P110 manual and correcting a mistake in the logic related to the resampling function. The constant resolution R is now optional parameter and the default action is to use the MUSE table." />
   </component>
 </project>

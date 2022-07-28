@@ -69,11 +69,11 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
             elif model == 'Settl':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
-                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7'
+                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.edit'
             elif model == 'Settl-2019':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-2019/'
-                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7'
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.edit'
             elif model == 'NextGen':
                 if not modspecdir:
                     modspecdir = 'Models/bt-nextgen/'
@@ -89,20 +89,8 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
             else:
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
-                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7'
-
-        #else:
-        #    if model == 'Dusty':
-        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'.BT-Dusty.spec.7'
-        #    elif model == 'Settl':
-        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-Settl.spec.7'
-        #    elif model == 'NextGen':
-        #        specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-NextGen.7'
-        #    elif model == 'Cond':
-        #        specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
-        #    else:
-        #        specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Settl.7.dat.txt'
-
+                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.edit'
+    #
     return specfile
 
 def get_spec_file_old(teff,LogG,modspecdir='Models/bt-settl/'):
