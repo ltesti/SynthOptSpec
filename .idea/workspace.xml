@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] Changed names of Settl files to the edited ones">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils, synspec] Inserted modifications in the return parameters of get_spec_file&#10;&#10;This change is required to track which spectra are in log flux and which spectra are in flux. This implies that there is a refactoring also in the synspec.py class">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659030581000</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="[utils, synspec] Inserted modifications in the return parameters of get_spec_file&#10;&#10;This change is required to track which spectra are in log flux and which spectra are in flux. This implies that there is a refactoring also in the synspec.py class">
+      <created>1664276638869</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1664276638869</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -172,6 +178,7 @@
     <MESSAGE value="[utils] minor bug" />
     <MESSAGE value="[synspec] Reworked the smoothing function, including the MUSE table from the P110 manual and correcting a mistake in the logic related to the resampling function. The constant resolution R is now optional parameter and the default action is to use the MUSE table." />
     <MESSAGE value="[utils] Changed names of Settl files to the edited ones" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils] Changed names of Settl files to the edited ones" />
+    <MESSAGE value="[utils, synspec] Inserted modifications in the return parameters of get_spec_file&#10;&#10;This change is required to track which spectra are in log flux and which spectra are in flux. This implies that there is a refactoring also in the synspec.py class" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils, synspec] Inserted modifications in the return parameters of get_spec_file&#10;&#10;This change is required to track which spectra are in log flux and which spectra are in flux. This implies that there is a refactoring also in the synspec.py class" />
   </component>
 </project>

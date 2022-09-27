@@ -126,7 +126,7 @@ class SynSpec(object):
                 plt.plot(self.aswl,self.sasfl,color='lightgreen',linestyle='dotted',alpha=0.6) 
             plt.plot(self.swl,self.ssfl,color='royalblue',linestyle='dotted')
             if resampled:
-                plt.plot(self.rswl,self.rssfl,color='cyan',linestyle='dashed')
+                plt.plot(self.rswl,self.rsfl,color='cyan',linestyle='dashed')
         #
         if outfile:
             plt.savefig(outfile)
