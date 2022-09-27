@@ -32,6 +32,7 @@ class SynSpec(object):
         self.params = parameters
         
         self.infile = self.params['file']
+        self.modflux_log = self.params['modflux_log']
         if 'format' in self.params.keys():
             self.file_format = self.params['format']
         else:
@@ -75,8 +76,16 @@ class SynSpec(object):
                 if columns[0] != '#':
                     mywl = float(columns[0].replace("D", "E"))
                     if (mywl >= self.wlextrmin) & (mywl <= self.wlextrmax):
-                        wl.append(mywl)
-                        fl.append(10**float(columns[1].replace("D", "E")))
+
+                        myf = float(columns[1].replace("D", "E"))
+                        try :
+                            wl.append(mywl)
+                            if self.modflux_log:
+                                fl.append(10 ** myf)
+                            else:
+                                fl.append(myf)
+                        except OverflowError:
+                            print(f'Error (Overflow) myf={myf}')
             f.close()
             vac_wl = np.array(wl, dtype=float)
             read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))

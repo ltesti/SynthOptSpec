@@ -41,7 +41,7 @@ def nrefrac(wl, density=1.0):
    refracstp = 272.643 + 1.2288 * wl2inv  + 3.555e-2 * wl2inv**2
    return density * refracstp
 
-def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
+def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict=None):
     """
     This function takes effective temperature (teff) and Log(g) (LogG) for the synthetic spectra
     and returns the filename for the spectrum. The directory where the synthetic spectra reside 
@@ -49,6 +49,16 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
     """
     teffstr = str(int(teff/100))
     Z = '0.0'
+    modflux_log = True
+
+    if in_dict:
+        modspecdir = in_dict['modspecdir']
+        if teff<1000.:
+            teffstr = '00'+teffstr
+        elif teff<10000.:
+            teffstr = '0'+teffstr
+        if teff>00.:
+            specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-'+in_dict['model']+'.spec.fits'
 
     if oldgrid:
         if not modspecdir:
@@ -82,6 +92,11 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
                 if not modspecdir:
                     modspecdir = 'Models/bt-cond/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
+            elif model == 'Cond-restricted':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-cond-restricted/'
+                modflux_log = False
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7.dat.txt'
             elif model == 'Settl-fits':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-fits/'
@@ -91,7 +106,8 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl'):
                     modspecdir = 'Models/bt-settl/'
                 specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.edit'
     #
-    return specfile
+
+    return specfile, modflux_log
 
 def get_spec_file_old(teff,LogG,modspecdir='Models/bt-settl/'):
     """
@@ -100,6 +116,7 @@ def get_spec_file_old(teff,LogG,modspecdir='Models/bt-settl/'):
     is also a parameter.
     """
     teffstr = str(int(teff/100))
+    modflux_log = True
     if teff<1000.:
         teffstr = '00'+teffstr
     elif teff<10000.:
@@ -109,7 +126,7 @@ def get_spec_file_old(teff,LogG,modspecdir='Models/bt-settl/'):
         specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'a+0.0.BT-NextGen.7.dat.txt'
     else:
         specfile = modspecdir+'lte'+teffstr+'-'+LogG+'-'+Z+'.BT-Settl.7.dat.txt'
-    return specfile
+    return specfile, modflux_log
 
 def resamp_spec(wlsamp, wl, fl):
     """
