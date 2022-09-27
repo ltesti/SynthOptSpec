@@ -76,6 +76,11 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                 if not modspecdir:
                     modspecdir = 'Models/bt-dusty/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Dusty.spec.7'
+            elif model == 'Dusty-restricted':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-dusty-restricted/'
+                modflux_log = False
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Dusty.7.dat.txt'
             elif model == 'Settl':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
