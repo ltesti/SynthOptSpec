@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] added dusty-restricted&#10;&#10;Tested">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] added settl-restricted and nextgen-restricted&#10;&#10;Tested">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664286931238</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="[utils] added settl-restricted and nextgen-restricted&#10;&#10;Tested">
+      <created>1664288285703</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1664288285703</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -195,6 +202,7 @@
     <MESSAGE value="[utils, synspec] Inserted modifications in the return parameters of get_spec_file&#10;&#10;This change is required to track which spectra are in log flux and which spectra are in flux. This implies that there is a refactoring also in the synspec.py class" />
     <MESSAGE value="[synspec] corrected rssfl in rsfl in plotspec&#10;&#10;Corrected a minor bug" />
     <MESSAGE value="[utils] added dusty-restricted&#10;&#10;Tested" />
-    <option name="LAST_COMMIT_MESSAGE" value="[utils] added dusty-restricted&#10;&#10;Tested" />
+    <MESSAGE value="[utils] added settl-restricted and nextgen-restricted&#10;&#10;Tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils] added settl-restricted and nextgen-restricted&#10;&#10;Tested" />
   </component>
 </project>

@@ -39,12 +39,16 @@ class SynSpec(object):
             self.file_format = 'fits'
         self.wlmin = self.params['wlmin']
         self.wlmax = self.params['wlmax']
+        if 'correct_vacuum' in self.params.keys():
+            self.correct_vacuum = self.params.keys()
+        else:
+            self.correct_vacuum = True
         
         # set minimum and maximum wavelengths to extract spectra
         self.wlextrmin, self.wlextrmax = self._set_readedges()
         
         # read spectrum, full resolution, within wavelength boundaries
-        self.aswl, self.asfl = self.getspec()
+        self.aswl, self.asfl = self.getspec(correct_vacuum=self.correct_vacuum)
         self.nwl = np.where((self.aswl>=self.wlmin) & (self.aswl<=self.wlmax))
         self.swl = self.aswl[self.nwl]
         self.sfl = self.asfl[self.nwl]
@@ -88,7 +92,10 @@ class SynSpec(object):
                             print(f'Error (Overflow) myf={myf}')
             f.close()
             vac_wl = np.array(wl, dtype=float)
-            read_wl = vac_wl/(1+1.e-6*nrefrac(vac_wl))
+            if correct_vacuum:
+                read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+            else:
+                read_wl = np.copy(vac_wl)
             read_fl = np.array(fl, dtype=float)
         else:
             spt = Table.read(self.infile, hdu=1)
