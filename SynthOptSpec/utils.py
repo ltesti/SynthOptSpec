@@ -76,6 +76,10 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                 if not modspecdir:
                     modspecdir = 'Models/bt-dusty/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Dusty.spec.7'
+            elif model == 'Dusty-last':
+                    if not modspecdir:
+                        modspecdir = 'Models/bt-dusty-last/'
+                    specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Dusty.spec.7'
             elif model == 'Dusty-restricted':
                 if not modspecdir:
                     modspecdir = 'Models/bt-dusty-restricted/'
@@ -85,6 +89,10 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
                 specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.edit'
+            elif model == 'Settl-last':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-settl-last/'
+                specfile = modspecdir + 'lte' + teffstr + '.0-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7'
             elif model == 'Settl-restricted':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-restricted/'
@@ -98,6 +106,10 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                 if not modspecdir:
                     modspecdir = 'Models/bt-nextgen/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7'
+            elif model == 'NextGen-last':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-nextgen-last/'
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7'
             elif model == 'NextGen-restricted':
                 if not modspecdir:
                     modspecdir = 'Models/bt-nextgen-restricted/'
@@ -106,6 +118,10 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
             elif model == 'Cond':
                 if not modspecdir:
                     modspecdir = 'Models/bt-cond/'
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
+            elif model == 'Cond-last':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-cond-last/'
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7'
             elif model == 'Cond-restricted':
                 if not modspecdir:
