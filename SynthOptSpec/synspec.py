@@ -48,7 +48,7 @@ class SynSpec(object):
         self.wlextrmin, self.wlextrmax = self._set_readedges()
         
         # read spectrum, full resolution, within wavelength boundaries
-        self.aswl, self.asfl = self.getspec(correct_vacuum=self.correct_vacuum)
+        self.aswl, self.asfl = self.getspec()
         self.nwl = np.where((self.aswl>=self.wlmin) & (self.aswl<=self.wlmax))
         self.swl = self.aswl[self.nwl]
         self.sfl = self.asfl[self.nwl]
@@ -65,7 +65,7 @@ class SynSpec(object):
         #
         return self.wlmin-self.wledge, self.wlmax+self.wledge
     
-    def getspec(self, correct_vacuum=True):
+    def getspec(self):
         """
         method to read the spectrum within the defined wavelength boundaries
         """
@@ -92,7 +92,7 @@ class SynSpec(object):
                             print(f'Error (Overflow) myf={myf}')
             f.close()
             vac_wl = np.array(wl, dtype=float)
-            if correct_vacuum:
+            if self.correct_vacuum:
                 read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
             else:
                 read_wl = np.copy(vac_wl)
@@ -102,7 +102,7 @@ class SynSpec(object):
             wl = 10000. * np.array(spt['Wavelength'], dtype=float)
             ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
             vac_wl = wl[ng]
-            if correct_vacuum:
+            if self.correct_vacuum:
                 read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
             else:
                 read_wl = np.copy(vac_wl)
