@@ -330,12 +330,23 @@ def apply_rvel(wl, rvel):
     #
     return wl
 
-def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, av=None, rv=3.1, rvel=None, normalization="Dominika"):
+def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, av=None, rv=3.1, rvel=None, veil=None, veilmode="Dominika", normalization="Dominika"):
     #
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
     #
     wl, fl = get_phot_spec(df, logg, teff)
+    
+    def get_dominika_f750(wl,fl):
+        id750 = np.abs(wl - 7500.).argmin()
+        f750 = np.nanmedian(fl[id750 - 3:id750 + 3])
+        return f750
+    
+    # veiling
+    if veil:
+        if veilmode == "Dominika":
+            f750 = get_dominika_f750(wl,fl)
+            fl = fl + veil*f750
 
     # Radial velocity
     if rvel and rvel != 0.0:
@@ -361,8 +372,9 @@ def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.
     # Normalize and return the final spectrum
     if normalization:
         if normalization == "Dominika":
-            id750 = np.abs(w - 7500.).argmin()
-            f750 = np.nanmedian(f[id750 - 3:id750 + 3])
+            # id750 = np.abs(w - 7500.).argmin()
+            # f750 = np.nanmedian(f[id750 - 3:id750 + 3])
+            f750 = get_dominika_f750(w,f)
             fn = f / f750
     else:
         fn = np.copy(f)
