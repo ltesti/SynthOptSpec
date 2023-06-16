@@ -202,7 +202,7 @@ class SynSpec(object):
         else:
             return ssfl
             
-    def resample(self, wlsamp, smoothed=False, set_rsfl_attribute=True, set_rssfl_attribute=True):
+    def resample(self, wlsamp, smoothed=False, set_rsfl_attribute=True):
         """
         method to resample the spectrum on a new wavelength grid
         the assumption is to do a simple binning - average flux per wl bin

@@ -85,6 +85,14 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                     modspecdir = 'Models/bt-dusty-restricted/'
                 modflux_log = False
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Dusty.7.dat.txt'
+            elif model == 'Dusty-bds':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-dusty-bds/'
+                modflux_log = False
+                if teff >= 2600.:
+                    specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Dusty.7.dat.txt'
+                else:
+                    specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Dusty.7.dat.txt'
             elif model == 'Settl':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl/'
@@ -128,6 +136,11 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                     modspecdir = 'Models/bt-cond-restricted/'
                 modflux_log = False
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Cond.7.dat.txt'
+            elif model == 'Cond-bds':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-cond-bds/'
+                modflux_log = False
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + '.BT-Cond.7.dat.txt'
             elif model == 'Settl-fits':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-fits/'
@@ -330,23 +343,17 @@ def apply_rvel(wl, rvel):
     #
     return wl
 
-def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25, av=None, rv=3.1, rvel=None, veil=None, veilmode="Dominika", normalization="Dominika"):
+def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25,
+             av=None, rv=3.1, rvel=None, normalization="Dominika"):
+    '''
+    Optional parameters:
+    rvel : radial velocity
+    '''
     #
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
     #
     wl, fl = get_phot_spec(df, logg, teff)
-    
-    def get_dominika_f750(wl,fl):
-        id750 = np.abs(wl - 7500.).argmin()
-        f750 = np.nanmedian(fl[id750 - 3:id750 + 3])
-        return f750
-    
-    # veiling
-    if veil:
-        if veilmode == "Dominika":
-            f750 = get_dominika_f750(wl,fl)
-            fl = fl + veil*f750
 
     # Radial velocity
     if rvel and rvel != 0.0:
@@ -372,9 +379,8 @@ def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.
     # Normalize and return the final spectrum
     if normalization:
         if normalization == "Dominika":
-            # id750 = np.abs(w - 7500.).argmin()
-            # f750 = np.nanmedian(f[id750 - 3:id750 + 3])
-            f750 = get_dominika_f750(w,f)
+            id750 = np.abs(w - 7500.).argmin()
+            f750 = np.nanmedian(f[id750 - 3:id750 + 3])
             fn = f / f750
     else:
         fn = np.copy(f)

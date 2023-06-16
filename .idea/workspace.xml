@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[synspec] really properly set up as a prameter the correct_vacuum feature">
+    <list default="true" id="75ccd931-a5f6-4bb8-9916-285fb9ad00a2" name="Changes" comment="[utils] added support for &quot;-last&quot; models">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SynthOptSpec/synspec.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/synspec.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SynthOptSpec/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/SynthOptSpec/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -13,6 +14,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="1bb7f688-87ca-4eb8-a973-4d87da379366" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -20,6 +24,9 @@
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
@@ -186,7 +193,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664396518452</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="[utils] added support for &quot;-last&quot; models">
+      <created>1664405844391</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1664405844391</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -219,6 +233,18 @@
     <MESSAGE value="[utils] added settl-restricted and nextgen-restricted&#10;&#10;Tested" />
     <MESSAGE value="[synspec] properly set up as a prameter the correct_vacuum feature" />
     <MESSAGE value="[synspec] really properly set up as a prameter the correct_vacuum feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="[synspec] really properly set up as a prameter the correct_vacuum feature" />
+    <MESSAGE value="[utils] added support for &quot;-last&quot; models" />
+    <option name="LAST_COMMIT_MESSAGE" value="[utils] added support for &quot;-last&quot; models" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>8</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
