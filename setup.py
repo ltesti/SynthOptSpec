@@ -8,7 +8,7 @@ exec(open("SynthOptSpec/_version.py", "r").read())
 
 # use README as long_description (for PyPI)
 try:
-    long_description = open("README.rst", "r", encoding="utf-8").read()
+    long_description = open("README", "r", encoding="utf-8").read()
 except TypeError:
     # under Python 2.7 the `encoding` keyword doesn't exist.
     print(
@@ -16,7 +16,7 @@ except TypeError:
         "Please upgrade your Python. SynthOptSpec is not meant for python 2 compatibility."
         "This software may not work as intended (or not work at all). "
     )
-    long_description = open("README.rst", "r").read()
+    long_description = open("README", "r").read()
 
 
 setup(
