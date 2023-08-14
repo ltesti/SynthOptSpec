@@ -162,3 +162,4 @@ cython_debug/
 main.py
 .gitignore
 SynthOptSpec/__pycache__/utils.cpython-38.pyc
+SynthOptSpec/__pycache__/synspec.cpython-38.pyc
