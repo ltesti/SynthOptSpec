@@ -476,6 +476,7 @@ def get_interp_spec(data_for_interpolation):
 def cardelli_extinction(wave, Av, Rv):
     # If you use it to apply a reddening to a spectrum, multiply it for the result of
     # this function, while you should divide by it in the case you want to deredden it.
+    # Adapted from Cardelli et al. (1989)
 
     #ebv = Av/Rv
 
