@@ -17,7 +17,9 @@ if matplotlib.get_backend().lower() == 'macosx':
     matplotlib.use('TkAgg')
 
 from .utils import get_spec_file, resamp_spec, get_spec, cardelli_extinction
-from .compute_magnitude import ComputeMag
+from .compute_magnitude import ComputeMag, read_standard_filters
 from .synspec import SynSpec
+
+print(__path__)
 
 

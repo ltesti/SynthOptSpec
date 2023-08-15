@@ -5,7 +5,8 @@
 #                        unicode_literals)
 
 import numpy as np
-# import types
+import os
+from astropy.table import Table
 
 def ComputeMag(wl, spec, wlf, traspf, fzero):
     """Compute magnitude for filter transparency
@@ -55,3 +56,16 @@ def ComputeMag(wl, spec, wlf, traspf, fzero):
     
     return -2.5*np.log10(fint/fzero)
     
+def read_standard_filters(data_dir='AstroFilterTransmissions/', fzero='fzero.dat', 
+                          filt=['h','j','k','kp','ks','lp','mp']):
+    #
+    #filepath = resource_filename('AstroFilterTransmissions', 'fzero.dat')
+    data_dir = "AstroFilterTransmissions/"
+    
+    root_dir, this_filename = os.path.split(__file__)
+    # note that the default filters have f0 units w/m2/um
+    fzero_file = os.path.join(root_dir, data_dir, fzero)
+
+    t0 = Table.read(fzero_file, format='ascii')
+
+    print(t0)
