@@ -11,6 +11,7 @@ import os
 from astropy.table import Table
 
 from .utils import resamp_spec, nrefrac
+from .compute_magnitude import ComputeMag, read_standard_filters
 
 class SynSpec(object):
     """
@@ -217,5 +218,28 @@ class SynSpec(object):
             self.rswl = wlsamp
         else:
             return resamp_spec(wlsamp, self.aswl, flvec)
+
+    def spec_to_mag(self):
+        """Used to compute magnitudes from spectra
+
+        This function will read the default filters provided in the package AstroFilterTransmissions
+        directory and will compute apparent magnitudes from spectra using procedures in compute_nagnitude.py
+
+        Note: the infrared filters have the wavelength scale and f0 in usits of [um] and [W/m2/um]
+               respectively
+        """
+        if not self.has_filters:
+            self.f0, self.trasp, self.filters = read_standard_filters()
+            self.has_filters = True
+
+        # we pass the full resolution files, note that this is not correct if we
+        # introduce a variation of the velocity
+        # self.aswl, self.asfl
+        # TODO: investigate the idea of inserting an option to pass lower resolution spectra
+        self.mags = {}
+        for i in range(len(self.filters)):
+            self.mags[self.filters[i]] = ComputeMag(self.aswl, self.asfl,
+                                               self.trasp['wl'+self.filters[i]], self.trasp['tr'+self.filters[i]],
+                                               self.f0[self.filters[i]],sos_units=True)
 
     

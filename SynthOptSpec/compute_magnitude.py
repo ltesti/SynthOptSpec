@@ -57,15 +57,34 @@ def ComputeMag(wl, spec, wlf, traspf, fzero):
     return -2.5*np.log10(fint/fzero)
     
 def read_standard_filters(data_dir='AstroFilterTransmissions/', fzero='fzero.dat', 
-                          filt=['h','j','k','kp','ks','lp','mp']):
+                          filt=['H','J','K','Kp','Ks','Lp','Mp'], sos_units=False):
+    """
+    :params sos_units: (bool) if True converts to SynthOptSpec units (wl in A and spec in erg/cm2/s/A)
+    """
     #
-    #filepath = resource_filename('AstroFilterTransmissions', 'fzero.dat')
-    data_dir = "AstroFilterTransmissions/"
-    
     root_dir, this_filename = os.path.split(__file__)
     # note that the default filters have f0 units w/m2/um
     fzero_file = os.path.join(root_dir, data_dir, fzero)
+    trasp = {}
+    for myfil in filt:
+        myfilfile = 'nsfcam_'+myfil.lower()+'mk_trans.dat'
+        f = open(os.path.join(root_dir, data_dir, myfilfile),'rb')
+        a = np.loadtxt(f, skiprows=1)
+        f.close()
+        mywl = np.copy(np.transpose(a)[0])
+        mytr = np.copy(np.transpose(a)[1])/100.
+        mytr[np.where(mytr < 0.)] = 0.0
+        #
+        if sos_units:
+            mywl = mywl*10000.
+        trasp['wl' + myfil] = mywl
+        trasp['tr' + myfil] = mytr
 
     t0 = Table.read(fzero_file, format='ascii')
+    if sos_units:
+        t0['F0'] = np.array(t0['F0']) / 10000. * 1000.
+    f0 = {}
+    for i in range(len(t0)):
+        f0[(t0[i])['Filter']] = (t0[i])['F0']
 
-    print(t0)
+    return f0, trasp, filt
