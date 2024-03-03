@@ -54,7 +54,7 @@ def ComputeMag(wl, spec, wlf, traspf, fzero):
     
     fint = np.trapz(fli*fl2i,wli)/np.trapz(traspf[nfs],wlf[nfs])
     
-    return -2.5*np.log10(fint/fzero)
+    return -2.5*np.log10(fint/fzero), fint
     
 def read_standard_filters(data_dir='AstroFilterTransmissions/', fzero='fzero.dat', 
                           filt=['H','J','K','Kp','Ks','Lp','Mp'], sos_units=False):
@@ -84,7 +84,9 @@ def read_standard_filters(data_dir='AstroFilterTransmissions/', fzero='fzero.dat
     if sos_units:
         t0['F0'] = np.array(t0['F0']) / 10000. * 1000.
     f0 = {}
+    wl0 = {}
     for i in range(len(t0)):
         f0[(t0[i])['Filter']] = (t0[i])['F0']
+        wl0[(t0[i])['Filter']] = (t0[i])['wl0']
 
-    return f0, trasp, filt
+    return wl0, f0, trasp, filt

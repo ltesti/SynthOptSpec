@@ -1,10 +1,11 @@
 
 #!/usr/bin/env python
 # coding=utf-8
-from setuptools import setup
+import numpy as np
+from setuptools import Extension, setup
+from Cython.Build import cythonize
 
-# read version number
-exec(open("SynthOptSpec/_version.py", "r").read())
+from SynthOptSpec._version import __version__
 
 # use README as long_description (for PyPI)
 try:
@@ -19,6 +20,11 @@ except TypeError:
     long_description = open("README", "r").read()
 
 
+extensions = [
+    Extension("*", ["SynthOptSpec/accel/*.pyx"],
+        include_dirs=[np.get_include()]),
+]
+
 setup(
     name="SynthOptSpec",
     version=__version__,
@@ -27,7 +33,10 @@ setup(
     author_email="ltesti120a@gmail.com",
     description="Utilities and scripts for the ECOGAL project to format synthetic spectra.",
     long_description=long_description,
-    install_requires=["numpy>=1.9", "matplotlib"],
+    install_requires=["numpy>=1.9", "matplotlib", "cython>=3.0", "astropy>=5.0"],
+    #ext_modules=cythonize("SynthOptSpec/utils_c.pyx"),
+    #include_dirs=[np.get_include()],
+    ext_modules=cythonize(extensions),
     license="LGPLv3",
     url="https://github.com/ltesti/SynthOptSpec",
     download_url="https://github.com/ltesti/SynthOptSpec/archive/{}.tar.gz".format(

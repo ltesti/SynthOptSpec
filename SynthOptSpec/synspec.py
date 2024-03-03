@@ -11,6 +11,7 @@ import os
 from astropy.table import Table
 
 from .utils import resamp_spec, nrefrac
+from .accel.utils_c import resamp_spec_c, smooth_c
 from .compute_magnitude import ComputeMag, read_standard_filters
 
 class SynSpec(object):
@@ -53,6 +54,9 @@ class SynSpec(object):
         self.nwl = np.where((self.aswl>=self.wlmin) & (self.aswl<=self.wlmax))
         self.swl = self.aswl[self.nwl]
         self.sfl = self.asfl[self.nwl]
+
+        #
+        self.has_filters = False
         
     def _set_readedges(self):
         """
@@ -139,7 +143,7 @@ class SynSpec(object):
         if outfile:
             plt.savefig(outfile)
 
-    def smoothspec(self, R=4000., set_ssfl_attribute=True, muse_res_manual=True, verbose=False, constantR=True, modelR=None, nsig=5.):
+    def smoothspec(self, R=4000., set_ssfl_attribute=True, muse_res_manual=True, verbose=False, constantR=True, modelR=None, nsig=5., accel=True):
         """
         method to do a gaussian convolution to reach a final resolution R
         in this initial version, we are assuming that modelR >> R (infinite
@@ -158,44 +162,48 @@ class SynSpec(object):
         nsig = 5. (number of sigmas for the numerical computation of the gaussian convolution)
         
         """
-        #
-        def fgauss(x,s):
-            return np.exp(-x**2/(2.*s**2))
 
-        # These are from the MUSE manual Section 3.2 (P110 version)
-        muse_res_wl = np.array([4650.0,5000.0,5500.0,6000.0,6500.0,7000.0,7500.0,8000.0,8500.0,9000.0,9350.0])
-        muse_res = np.array([1609.,1750.,1978.,2227.,2484.,2737.,2975.,3183.,3350.,3465.,3506.])
+        if accel:
+            ssfl = smooth_c(self.aswl, self.asfl, R, muse_res_manual, verbose, nsig)
+        else:
+            #
+            def fgauss(x,s):
+                return np.exp(-x**2/(2.*s**2))
 
-        ssfl = np.zeros(len(self.asfl))
-        dl = self.aswl / R
-        if muse_res_manual:
-            if verbose: print("Using MUSE-res-manual ({0}, {1}) => ".format(dl[0],dl[-1]))
-            muse_res_interp = ssi.interp1d(muse_res_wl,muse_res)
-            nlow = np.where(self.aswl<=muse_res_wl[0])
-            dl[nlow] = self.aswl[nlow]/muse_res[0]
-            nhigh = np.where(self.aswl>=muse_res_wl[-1])
-            dl[nhigh] = self.aswl[nhigh]/muse_res[-1]
-            ninterp = np.where((self.aswl>muse_res_wl[0]) & (self.aswl<muse_res_wl[-1]))
-            dl[ninterp] = self.aswl[ninterp]/muse_res_interp(self.aswl[ninterp])
-            if verbose: print(" ({0}, {1})\n".format(dl[0], dl[-1]))
+            # These are from the MUSE manual Section 3.2 (P110 version)
+            muse_res_wl = np.array([4650.0,5000.0,5500.0,6000.0,6500.0,7000.0,7500.0,8000.0,8500.0,9000.0,9350.0])
+            muse_res = np.array([1609.,1750.,1978.,2227.,2484.,2737.,2975.,3183.,3350.,3465.,3506.])
 
-        sdl = dl / (2. * np.sqrt(2. * np.log(2.)))
+            ssfl = np.zeros(len(self.asfl))
+            dl = self.aswl / R
+            if muse_res_manual:
+                if verbose: print("Using MUSE-res-manual ({0}, {1}) => ".format(dl[0],dl[-1]))
+                muse_res_interp = ssi.interp1d(muse_res_wl,muse_res)
+                nlow = np.where(self.aswl<=muse_res_wl[0])
+                dl[nlow] = self.aswl[nlow]/muse_res[0]
+                nhigh = np.where(self.aswl>=muse_res_wl[-1])
+                dl[nhigh] = self.aswl[nhigh]/muse_res[-1]
+                ninterp = np.where((self.aswl>muse_res_wl[0]) & (self.aswl<muse_res_wl[-1]))
+                dl[ninterp] = self.aswl[ninterp]/muse_res_interp(self.aswl[ninterp])
+                if verbose: print(" ({0}, {1})\n".format(dl[0], dl[-1]))
 
-        for i in range(len(self.asfl)):
-            #dl = self.aswl[i]/R
-            #nsig = 5.
-            #sdl = dl/(2.*np.sqrt(2.*np.log(2.)))
-            msdl = self.aswl[i]-nsig*sdl[i]
-            psdl = self.aswl[i]+nsig*sdl[i]
-            nsm = np.where((self.aswl >= msdl) & (self.aswl<=psdl))
-            smwl = self.aswl[nsm]
-            fs = 0.
-            area = 0.
-            for j in range(len(smwl)):
-                fg = fgauss(smwl[j]-self.aswl[i],sdl[i])
-                fs += fg*self.asfl[nsm[0][j]]
-                area += fg
-            ssfl[i] = fs/area
+            sdl = dl / (2. * np.sqrt(2. * np.log(2.)))
+
+            for i in range(len(self.asfl)):
+                #dl = self.aswl[i]/R
+                #nsig = 5.
+                #sdl = dl/(2.*np.sqrt(2.*np.log(2.)))
+                msdl = self.aswl[i]-nsig*sdl[i]
+                psdl = self.aswl[i]+nsig*sdl[i]
+                nsm = np.where((self.aswl >= msdl) & (self.aswl<=psdl))
+                smwl = self.aswl[nsm]
+                fs = 0.
+                area = 0.
+                for j in range(len(smwl)):
+                    fg = fgauss(smwl[j]-self.aswl[i],sdl[i])
+                    fs += fg*self.asfl[nsm[0][j]]
+                    area += fg
+                ssfl[i] = fs/area
         #
         if set_ssfl_attribute:
             self.sasfl = ssfl
@@ -203,7 +211,7 @@ class SynSpec(object):
         else:
             return ssfl
             
-    def resample(self, wlsamp, smoothed=False, set_rsfl_attribute=True):
+    def resample(self, wlsamp, smoothed=False, set_rsfl_attribute=True, accel=True):
         """
         method to resample the spectrum on a new wavelength grid
         the assumption is to do a simple binning - average flux per wl bin
@@ -214,10 +222,16 @@ class SynSpec(object):
         else:
             flvec = np.copy(self.asfl)
         if set_rsfl_attribute:
-            self.rsfl = resamp_spec(wlsamp, self.aswl, flvec)
+            if accel:
+                self.rsfl = resamp_spec_c(wlsamp, self.aswl, flvec)
+            else:
+                self.rsfl = resamp_spec(wlsamp, self.aswl, flvec)
             self.rswl = wlsamp
         else:
-            return resamp_spec(wlsamp, self.aswl, flvec)
+            if accel:
+                return resamp_spec_c(wlsamp, self.aswl, flvec)
+            else:
+                return resamp_spec(wlsamp, self.aswl, flvec)
 
     def spec_to_mag(self):
         """Used to compute magnitudes from spectra
@@ -229,7 +243,7 @@ class SynSpec(object):
                respectively
         """
         if not self.has_filters:
-            self.f0, self.trasp, self.filters = read_standard_filters()
+            self.wlfilters, self.f0, self.trasp, self.filters = read_standard_filters(sos_units=True)
             self.has_filters = True
 
         # we pass the full resolution files, note that this is not correct if we
@@ -237,9 +251,11 @@ class SynSpec(object):
         # self.aswl, self.asfl
         # TODO: investigate the idea of inserting an option to pass lower resolution spectra
         self.mags = {}
+        self.fluxes = {}
+        self.wlmag = {}
         for i in range(len(self.filters)):
-            self.mags[self.filters[i]] = ComputeMag(self.aswl, self.asfl,
+            self.mags[self.filters[i]], self.fluxes[self.filters[i]] = ComputeMag(self.aswl, self.asfl,
                                                self.trasp['wl'+self.filters[i]], self.trasp['tr'+self.filters[i]],
-                                               self.f0[self.filters[i]],sos_units=True)
+                                               self.f0[self.filters[i]])
 
     
