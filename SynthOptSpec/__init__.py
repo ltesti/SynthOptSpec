@@ -16,6 +16,9 @@ import matplotlib
 if matplotlib.get_backend().lower() == 'macosx':
     matplotlib.use('TkAgg')
 
-from .utils import get_spec_file, resamp_spec, get_spec, cardelli_extinction
+#from .resample import resamp_spec
+from .get_spec_file import get_spec_file
+from .get_spec import get_spec
+#from .extinction import cardelli_extinction
 from .synspec import SynSpec
 

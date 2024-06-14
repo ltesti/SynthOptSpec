@@ -10,7 +10,9 @@ import matplotlib.pyplot as plt
 import os
 from astropy.table import Table
 
-from .utils import resamp_spec, nrefrac
+#from .utils import nrefrac
+from .resample import resamp_spec
+from .readspec import read_phoenix_txt, read_phoenix_fits, read_atlas9
 
 class SynSpec(object):
     """
@@ -30,6 +32,7 @@ class SynSpec(object):
         """
                 
         self.params = parameters
+        print(parameters)
         
         self.infile = self.params['file']
         self.modflux_log = self.params['modflux_log']
@@ -71,42 +74,24 @@ class SynSpec(object):
         """
 
         if (self.file_format == 'old') or (self.file_format == 'txt'):
-            f = open(self.infile, 'r')
-            wl = []
-            fl = []
-            for line in f:
-                line = line.strip()
-                columns = line.split()
-                if columns[0] != '#':
-                    mywl = float(columns[0].replace("D", "E"))
-                    if (mywl >= self.wlextrmin) & (mywl <= self.wlextrmax):
-
-                        myf = float(columns[1].replace("D", "E"))
-                        try :
-                            wl.append(mywl)
-                            if self.modflux_log:
-                                fl.append(10 ** myf)
-                            else:
-                                fl.append(myf)
-                        except OverflowError:
-                            print(f'Error (Overflow) myf={myf}')
-            f.close()
-            vac_wl = np.array(wl, dtype=float)
-            if self.correct_vacuum:
-                read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
-            else:
-                read_wl = np.copy(vac_wl)
-            read_fl = np.array(fl, dtype=float)
+            read_wl, read_fl = read_phoenix_txt(self.infile, self.wlextrmin, self.wlextrmax, self.modflux_log, self.correct_vacuum)
+        elif self.file_format == 'fits':
+            read_wl, read_fl = read_phoenix_fits(self.infile, self.wlextrmin, self.wlextrmax, self.correct_vacuum)
+            #spt = Table.read(self.infile, hdu=1)
+            #wl = 10000. * np.array(spt['Wavelength'], dtype=float)
+            #ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
+            #vac_wl = wl[ng]
+            #if self.correct_vacuum:
+            #    read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+            #else:
+            #    read_wl = np.copy(vac_wl)
+            #read_fl = np.array(spt['Flux'], dtype=float)[ng]
+        elif self.file_format == 'atlas9':
+            read_wl, read_fl = read_atlas9(self.infile, self.wlextrmin, self.wlextrmax, correct_vacuum=False)
         else:
-            spt = Table.read(self.infile, hdu=1)
-            wl = 10000. * np.array(spt['Wavelength'], dtype=float)
-            ng = np.where((wl >= self.wlextrmin) & (wl <= self.wlextrmax))
-            vac_wl = wl[ng]
-            if self.correct_vacuum:
-                read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
-            else:
-                read_wl = np.copy(vac_wl)
-            read_fl = np.array(spt['Flux'], dtype=float)[ng]
+            print("Warning! file_format {0} not recognized!".format(self.file_format))
+            print("         We will try to read as fits, it probably wont work!")
+            read_wl, read_fl = read_phoenix_fits(self.infile, self.wlextrmin, self.wlextrmax, self.correct_vacuum)
         #
         nsort = np.argsort(read_wl)
         return read_wl[nsort], read_fl[nsort]
