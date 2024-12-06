@@ -140,12 +140,12 @@ def get_g_t_idx(df,myg,myt):
     }
     return mydatadic
 
-def get_phot_spec(df, logg, teff):
+def get_phot_spec(df, logg, teff, logint_flux=False, logint_pars=False):
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
     #
     data_for_interpolation = get_g_t_idx(df, logg, teff)
-    wl, fl = get_interp_spec(data_for_interpolation)
+    wl, fl = get_interp_spec(data_for_interpolation,logint_flux=logint_flux, logint_pars=logint_pars)
     #
     return wl, fl
 
@@ -158,7 +158,7 @@ def apply_rvel(wl, rvel):
     return wl
 
 def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.25,
-             av=None, rv=3.1, rvel=None, normalization="Dominika"):
+             av=None, rv=3.1, rvel=None, normalization="Dominika", logint_flux=False, logint_pars=False):
     '''
     Optional parameters:
     rvel : radial velocity
@@ -167,7 +167,7 @@ def get_spec(df, logg, teff, wlmin=4750.1572265625, wlmax=9351.4072265625, dl=1.
     # gets the spectra from the library and interpolates at the resolution
     # of the lower resolution spectrum in the (up to) four spectra
     #
-    wl, fl = get_phot_spec(df, logg, teff)
+    wl, fl = get_phot_spec(df, logg, teff, logint_flux=logint_flux, logint_pars=logint_pars)
 
     # Radial velocity
     if rvel and rvel != 0.0:
@@ -211,21 +211,25 @@ def get_wlgrid(w1, w2):
     return np.arange(wstart, wend, dw)
 
 
-def get_tinterp(wltg, teff, w1, w2, f1, f2, t1, t2, logint=False):
+def get_tinterp(wltg, teff, w1, w2, f1, f2, t1, t2, logint_flux=False, logint_pars=False):
     #
     rf1 = resamp_spec(wltg, w1, f1)
     rf2 = resamp_spec(wltg, w2, f2)
-    if logint:
+    if logint_pars:
         k1 = 1. - (np.log10(teff) - np.log10(t1)) / (np.log10(t2) - np.log10(t1))
         k2 = 1. - (np.log10(t2) - np.log10(teff)) / (np.log10(t2) - np.log10(t1))
     else:
         k1 = 1. - (teff - t1) / (t2 - t1)
         k2 = 1. - (t2 - teff) / (t2 - t1)
-    return k1 * rf1 + k2 * rf2
+    if logint_flux:
+        rf_int = 10**(k1 * np.log10(rf1) + k2 * np.log10(rf2))
+    else:
+        rf_int = k1 * rf1 + k2 * rf2
+    return rf_int
 
 
 # define a function to regrid on a common wl grid the spectra
-def get_interp_spec(data_for_interpolation):
+def get_interp_spec(data_for_interpolation, logint_flux=False, logint_pars=False):
     logg = data_for_interpolation['LogG']
     teff = data_for_interpolation['Teff']
     if data_for_interpolation['exactg']:
@@ -243,7 +247,7 @@ def get_interp_spec(data_for_interpolation):
             t1 = np.copy(data_for_interpolation['tg1_1'])
             t2 = np.copy(data_for_interpolation['tg1_2'])
             wltg = get_wlgrid(w1, w2)
-            fltg = get_tinterp(wltg, teff, w1, w2, f1, f2, t1, t2, logint=False)
+            fltg = get_tinterp(wltg, teff, w1, w2, f1, f2, t1, t2, logint_flux=logint_flux, logint_pars=logint_pars)
     else:
         # need to interpolate between the two LogG
         g1 = np.copy(data_for_interpolation['g1'])
@@ -276,11 +280,11 @@ def get_interp_spec(data_for_interpolation):
         if data_for_interpolation['exacttg1']:
             fltg1 = np.copy(data_for_interpolation['ftg1_1'])
         else:
-            fltg1 = get_tinterp(wltg, teff, w1g1, w2g1, f1g1, f2g1, t1g1, t2g1, logint=False)
+            fltg1 = get_tinterp(wltg, teff, w1g1, w2g1, f1g1, f2g1, t1g1, t2g1, logint=logint_flux)
         if data_for_interpolation['exacttg2']:
             fltg2 = np.copy(data_for_interpolation['ftg2_1'])
         else:
-            fltg2 = get_tinterp(wltg, teff, w1g2, w2g2, f1g2, f2g2, t1g2, t2g2, logint=False)
-        fltg = get_tinterp(wltg, logg, wltg1, wltg2, fltg1, fltg2, g1, g2, logint=False)
+            fltg2 = get_tinterp(wltg, teff, w1g2, w2g2, f1g2, f2g2, t1g2, t2g2, logint=logint_flux)
+        fltg = get_tinterp(wltg, logg, wltg1, wltg2, fltg1, fltg2, g1, g2, logint=logint_flux)
         # print('logg={0} g1={1} g2={2}'.format(logg,g1,g2))
     return wltg, fltg
