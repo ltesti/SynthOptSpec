@@ -280,11 +280,11 @@ def get_interp_spec(data_for_interpolation, logint_flux=False, logint_pars=False
         if data_for_interpolation['exacttg1']:
             fltg1 = np.copy(data_for_interpolation['ftg1_1'])
         else:
-            fltg1 = get_tinterp(wltg, teff, w1g1, w2g1, f1g1, f2g1, t1g1, t2g1, logint=logint_flux)
+            fltg1 = get_tinterp(wltg, teff, w1g1, w2g1, f1g1, f2g1, t1g1, t2g1, logint_flux=logint_flux)
         if data_for_interpolation['exacttg2']:
             fltg2 = np.copy(data_for_interpolation['ftg2_1'])
         else:
-            fltg2 = get_tinterp(wltg, teff, w1g2, w2g2, f1g2, f2g2, t1g2, t2g2, logint=logint_flux)
-        fltg = get_tinterp(wltg, logg, wltg1, wltg2, fltg1, fltg2, g1, g2, logint=logint_flux)
+            fltg2 = get_tinterp(wltg, teff, w1g2, w2g2, f1g2, f2g2, t1g2, t2g2, logint_flux=logint_flux)
+        fltg = get_tinterp(wltg, logg, wltg1, wltg2, fltg1, fltg2, g1, g2, logint_flux=logint_flux)
         # print('logg={0} g1={1} g2={2}'.format(logg,g1,g2))
     return wltg, fltg
