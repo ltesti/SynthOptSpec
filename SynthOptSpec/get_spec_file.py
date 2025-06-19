@@ -55,6 +55,7 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
 
     if in_dict:
         modspecdir = in_dict['modspecdir']
+        modflux_log = False
         if teff<1000.:
             teffstr = '00'+teffstr
         elif teff<10000.:
@@ -62,6 +63,7 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
         if teff>00.:
             specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-'+in_dict['model']+'.spec.fits'
 
+    #modflux_log=False
     if oldgrid:
         if not modspecdir:
             modspecdir = 'Models/bt-settl-fits/'

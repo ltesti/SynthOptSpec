@@ -61,6 +61,21 @@ def read_phoenix_fits(infile, wlextrmin, wlextrmax, correct_vacuum):
 
     return read_wl, read_fl
 
+def read_xs_library(infile, wlextrmin, wlextrmax, correct_vacuum):
+    """
+    """
+    spt = Table.read(infile, hdu=1)
+    wl = 10.*np.array(spt['WAVE'], dtype=float)
+    ng = np.where((wl >= wlextrmin) & (wl <= wlextrmax))
+    vac_wl = wl[ng]
+    if correct_vacuum:
+        read_wl = vac_wl / (1 + 1.e-6 * nrefrac(vac_wl))
+    else:
+        read_wl = np.copy(vac_wl)
+    read_fl = np.array(spt['FLUX'], dtype=float)[ng]
+
+    return read_wl, read_fl
+
 def read_atlas9(infile, wlextrmin, wlextrmax, correct_vacuum=False):
     """
     """

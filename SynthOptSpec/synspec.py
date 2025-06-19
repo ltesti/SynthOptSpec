@@ -12,7 +12,7 @@ from astropy.table import Table
 
 #from .utils import nrefrac
 from .resample import resamp_spec
-from .readspec import read_phoenix_txt, read_phoenix_fits, read_atlas9
+from .readspec import read_phoenix_txt, read_phoenix_fits, read_atlas9, read_xs_library
 
 class SynSpec(object):
     """
@@ -47,6 +47,7 @@ class SynSpec(object):
         else:
             self.correct_vacuum = True
         
+        print('file_format = {0}'.format(self.file_format))
         # set minimum and maximum wavelengths to extract spectra
         self.wlextrmin, self.wlextrmax = self._set_readedges()
         
@@ -88,6 +89,8 @@ class SynSpec(object):
             #read_fl = np.array(spt['Flux'], dtype=float)[ng]
         elif self.file_format == 'atlas9':
             read_wl, read_fl = read_atlas9(self.infile, self.wlextrmin, self.wlextrmax, correct_vacuum=False)
+        elif self.file_format == 'xs_library':
+            read_wl, read_fl = read_xs_library(self.infile, self.wlextrmin, self.wlextrmax, correct_vacuum=False)
         else:
             print("Warning! file_format {0} not recognized!".format(self.file_format))
             print("         We will try to read as fits, it probably wont work!")
