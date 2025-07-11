@@ -110,6 +110,11 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                     modspecdir = 'Models/bt-settl-restricted/'
                 modflux_log = False
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.dat.txt'
+            elif model == 'Settl-ffpmos':
+                if not modspecdir:
+                    modspecdir = 'Models/bt-settl-ffpmos/'
+                modflux_log = False
+                specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-0.0.BT-Settl.spec.7.dat.txt'
             elif model == 'Settl-2019':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-2019/'
