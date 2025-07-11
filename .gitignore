@@ -163,3 +163,5 @@ main.py
 SynthOptSpec/__pycache__/utils.cpython-38.pyc
 SynthOptSpec/__pycache__/synspec.cpython-38.pyc
 example/Models
+
+.DS_Store
