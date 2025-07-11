@@ -110,7 +110,7 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                     modspecdir = 'Models/bt-settl-restricted/'
                 modflux_log = False
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-Settl.spec.7.dat.txt'
-            elif model == 'Settl-ffpmos': #added for VBianchet thesis
+            elif model == 'Settl-ffpmos':
                 if not modspecdir:
                     modspecdir = 'Models/bt-settl-ffpmos/'
                 modflux_log = False
@@ -137,11 +137,6 @@ def get_spec_file(teff,LogG,modspecdir=None,oldgrid=False,model='Settl', in_dict
                     modspecdir = 'Models/bt-nextgen-agss2009/'
                 modflux_log = False
                 specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7.dat.txt'
-            #elif model == 'Kurucz':
-            #    if not modspecdir:
-            #        modspecdir = 'Models/Kurucz2003all/'
-            #    modflux_log = False
-            #    specfile = modspecdir + 'lte' + teffstr + '-' + LogG + '-' + Z + 'a+0.0.BT-NextGen.7.dat.txt'
             elif model == 'Cond':
                 if not modspecdir:
                     modspecdir = 'Models/bt-cond/'
