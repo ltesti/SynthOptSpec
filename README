@@ -1,1 +1,7 @@
-Code to read synthetic stellar spectra and convert it into the wavelength range, resolution and sampling of the MUSE data. Originally developed for the Tr14 Carina MUSE project.
+Code to read synthetic stellar spectra and convert it into the wavelength range, resolution and sampling of the MUSE data. 
+Originally developed for the Tr14 Carina MUSE project.
+
+The development of this software was partially supported by the
+European Union’s Horizon 2020 research and innovation programme through
+the European Research Council (ERC) ERC Synergy Grant ECOGAL (grant
+855130).
